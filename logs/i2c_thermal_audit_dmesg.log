@@ -1,0 +1,68 @@
+[    7.705961] ixgbe: Intel(R) 10 Gigabit PCI Express Network Driver
+[    7.706236] ixgbe: Copyright (c) 1999-2016 Intel Corporation.
+[    7.887379] ixgbe 0000:01:00.0: Multiqueue Enabled: Rx Queue count = 4, Tx Queue count = 4 XDP Queue count = 0
+[    7.888581] ixgbe 0000:01:00.0: 32.000 Gb/s available PCIe bandwidth (5.0 GT/s PCIe x8 link)
+[    7.889645] ixgbe 0000:01:00.0: MAC: 2, PHY: 14, SFP+: 3, PBA No: G73129-000
+[    7.889955] ixgbe 0000:01:00.0: a0:36:9f:28:ab:f8
+[    7.894025] ixgbe 0000:01:00.0: Intel(R) 10 Gigabit Network Connection
+[    7.894447] ixgbe 0000:01:00.0: Firmware logging not supported
+[    8.062117] ixgbe 0000:01:00.1: Multiqueue Enabled: Rx Queue count = 4, Tx Queue count = 4 XDP Queue count = 0
+[    8.062828] ixgbe 0000:01:00.1: 32.000 Gb/s available PCIe bandwidth (5.0 GT/s PCIe x8 link)
+[    8.063543] ixgbe 0000:01:00.1: MAC: 2, PHY: 14, SFP+: 4, PBA No: G73129-000
+[    8.063815] ixgbe 0000:01:00.1: a0:36:9f:28:ab:fa
+[    8.067091] ixgbe 0000:01:00.1: Intel(R) 10 Gigabit Network Connection
+[    8.067447] ixgbe 0000:01:00.1: Firmware logging not supported
+[    9.472716] ixgbe 0000:01:00.0: registered PHC device on eth1
+[    9.605332] ixgbe 0000:01:00.1: registered PHC device on eth2
+[    9.649395] ixgbe 0000:01:00.0 eth1: detected SFP+: 3
+[    9.778219] ixgbe 0000:01:00.1 eth2: detected SFP+: 4
+[   10.017793] ixgbe 0000:01:00.1 eth2: NIC Link is Up 10 Gbps, Flow Control: RX/TX
+[   10.099233] ixgbe 0000:01:00.0 eth1: NIC Link is Up 10 Gbps, Flow Control: RX/TX
+[   77.156821] ixgbe 0000:01:00.1: removed PHC on eth2
+[   77.221196] ixgbe 0000:01:00.1: complete
+[   77.221869] ixgbe 0000:01:00.0: removed PHC on eth1
+[   77.289266] ixgbe 0000:01:00.0: complete
+[   80.288541] ixgbe: loading out-of-tree module taints kernel.
+[   80.288779] ixgbe: module verification failed: signature and/or required key missing - tainting kernel
+[   80.311543] ixgbe: Intel(R) 10 Gigabit PCI Express Network Driver
+[   80.311781] ixgbe: Copyright (c) 1999-2016 Intel Corporation.
+[   81.495753] ixgbe 0000:01:00.0: Probing 0x48; Status: -5, Data: 0x00
+[   82.535856] ixgbe 0000:01:00.0: Probing 0x49; Status: -5, Data: 0x00
+[   83.575895] ixgbe 0000:01:00.0: Probing 0x4a; Status: -5, Data: 0x00
+[   84.615918] ixgbe 0000:01:00.0: Probing 0x4b; Status: -5, Data: 0x00
+[   85.656116] ixgbe 0000:01:00.0: Probing 0x4c; Status: -5, Data: 0x00
+[   86.696239] ixgbe 0000:01:00.0: Probing 0x4d; Status: -5, Data: 0x00
+[   87.736231] ixgbe 0000:01:00.0: Probing 0x4e; Status: -5, Data: 0x00
+[   88.776333] ixgbe 0000:01:00.0: Probing 0x4f; Status: -5, Data: 0x00
+[   88.776595] ixgbe 0000:01:00.0: failed to find thermal sensor.
+[   88.776820] ixgbe 0000:01:00.0: Thermal sensor not detected (present: 0)
+[   88.801813] ixgbe 0000:01:00.0: Multiqueue Enabled: Rx Queue count = 4, Tx Queue count = 4 XDP Queue count = 0
+[   88.802498] ixgbe 0000:01:00.0: 32.000 Gb/s available PCIe bandwidth (5.0 GT/s PCIe x8 link)
+[   88.803148] ixgbe 0000:01:00.0: MAC: 2, PHY: 14, SFP+: 3, PBA No: G73129-000
+[   88.803419] ixgbe 0000:01:00.0: a0:36:9f:28:ab:f8
+[   88.807275] ixgbe 0000:01:00.0: Intel(R) 10 Gigabit Network Connection
+[   88.807684] ixgbe 0000:01:00.0: Firmware logging not supported
+[   88.901589] ixgbe 0000:01:00.0: registered PHC device on eth1
+[   89.071206] ixgbe 0000:01:00.0 eth1: detected SFP+: 3
+[   89.300243] ixgbe 0000:01:00.0 eth1: NIC Link is Up 10 Gbps, Flow Control: RX/TX
+[   89.992403] ixgbe 0000:01:00.1: Probing 0x48; Status: -5, Data: 0x00
+[   91.032548] ixgbe 0000:01:00.1: Probing 0x49; Status: -5, Data: 0x00
+[   92.072646] ixgbe 0000:01:00.1: Probing 0x4a; Status: -5, Data: 0x00
+[   93.112749] ixgbe 0000:01:00.1: Probing 0x4b; Status: -5, Data: 0x00
+[   94.153007] ixgbe 0000:01:00.1: Probing 0x4c; Status: -5, Data: 0x00
+[   95.192962] ixgbe 0000:01:00.1: Probing 0x4d; Status: -5, Data: 0x00
+[   96.233053] ixgbe 0000:01:00.1: Probing 0x4e; Status: -5, Data: 0x00
+[   97.273257] ixgbe 0000:01:00.1: Probing 0x4f; Status: -5, Data: 0x00
+[   97.273522] ixgbe 0000:01:00.1: failed to find thermal sensor.
+[   97.273747] ixgbe 0000:01:00.1: Thermal sensor not detected (present: 0)
+[   97.298653] ixgbe 0000:01:00.1: Multiqueue Enabled: Rx Queue count = 4, Tx Queue count = 4 XDP Queue count = 0
+[   97.299338] ixgbe 0000:01:00.1: 32.000 Gb/s available PCIe bandwidth (5.0 GT/s PCIe x8 link)
+[   97.299987] ixgbe 0000:01:00.1: MAC: 2, PHY: 14, SFP+: 4, PBA No: G73129-000
+[   97.300258] ixgbe 0000:01:00.1: a0:36:9f:28:ab:fa
+[   97.304121] ixgbe 0000:01:00.1: Intel(R) 10 Gigabit Network Connection
+[   97.304486] ixgbe 0000:01:00.1: Firmware logging not supported
+[   97.393071] ixgbe 0000:01:00.1: registered PHC device on eth2
+[   97.558553] ixgbe 0000:01:00.1 eth2: detected SFP+: 4
+[   97.559109] ixgbe 0000:01:00.0 eth1: NIC Link is Down
+[  102.911179] ixgbe 0000:01:00.1 eth2: NIC Link is Up 10 Gbps, Flow Control: RX/TX
+[  102.911669] ixgbe 0000:01:00.0 eth1: NIC Link is Up 10 Gbps, Flow Control: RX/TX 

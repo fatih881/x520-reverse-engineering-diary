@@ -1,0 +1,121 @@
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
+index 034618e79169..80c7ae54edbf 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
+@@ -11726,7 +11726,23 @@ static int ixgbe_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 		e_dev_err("HW Init failed: %d\n", err);
+ 		goto err_sw_init;
+ 	}
++#ifdef CONFIG_ML75_EXPER
++	err = ixgbe_probe_i2c_thermal_sensor(hw);
++	if (err == -ENODEV) {
++		e_dev_err("failed to find thermal sensor.\n");
++		err = 0;
++	} else if (err == -EINVAL) {
++		e_dev_err("HW Init failed: %d\n", err);
++		goto err_sw_init;
++	}
+ 
++	if (hw->thermal_sensor_present)
++		e_dev_info(adapter,"Thermal sensor detected at address: 0x%02x\n",
++			hw->thermal_sensor_location);
++	else
++		e_dev_info(adapter,"Thermal sensor not detected (present: %d)\n",
++			hw->thermal_sensor_present);
++#endif
+ #ifdef CONFIG_PCI_IOV
+ 	/* SR-IOV not supported on the 82598 */
+ 	if (adapter->hw.mac.type == ixgbe_mac_82598EB)
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_phy.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_phy.c
+index 2449e4cf2679..2877fc6bc7d2 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_phy.c
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_phy.c
+@@ -389,6 +389,46 @@ static enum ixgbe_phy_type ixgbe_get_phy_type_from_id(u32 phy_id)
+ 
+ 	return phy_type;
+ }
++#ifdef CONFIG_ML75_EXPER
++/**
++ * ixgbe_probe_i2c_thermal_sensor - Scans for unmapped LM75 sensors
++ * @hw: pointer to hardware structure
++ *
++ * Reads PCB temp, roughly T_junction - 20C.
++ * If it finds anything, it must be checked strictly to make sure it's temperature.
++ */
++int ixgbe_probe_i2c_thermal_sensor(struct ixgbe_hw *hw)
++{
++	u8 read_data = 0;
++	int status;
++	u8 addr;
++
++	hw->thermal_sensor_location = 0;
++	hw->thermal_sensor_present = false;
++
++	if (!hw)
++		return -EINVAL;
++
++	for (addr = LM75_RANGE_START; addr <= LM75_RANGE_END; addr++) {
++		status = ixgbe_read_i2c_byte_generic(hw, LM75_TEMP_REG, addr << 1,
++						     &read_data);
++		hw_dbg(hw, "Probing 0x%02x; Status: %d, Data: 0x%02x\n",
++		       addr, status, read_data);
++
++		if (status != 0)
++			continue;
++
++		if (read_data == LM75_TEMP_REG ||
++		    read_data >= IXGBE_ASIC_TCASE_MAX)
++			continue;
++
++		hw->thermal_sensor_location = addr;
++		hw->thermal_sensor_present = true;
++		return 0;
++	}
++	return -ENODEV;
++}
++#endif
+ 
+ /**
+  *  ixgbe_reset_phy_generic - Performs a PHY reset
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_phy.h b/drivers/net/ethernet/intel/ixgbe/ixgbe_phy.h
+index 81179c60af4e..2c7e11f96cdd 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_phy.h
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_phy.h
+@@ -122,6 +122,12 @@
+ 
+ /* SFP+ SFF-8472 Compliance code */
+ #define IXGBE_SFF_SFF_8472_UNSUP      0x00
++#ifdef CONFIG_ML75_EXPER
++#define IXGBE_ASIC_TCASE_MAX	0x77
++#define LM75_TEMP_REG		0x00
++#define LM75_RANGE_START	0x48
++#define LM75_RANGE_END		0x4f
++#endif
+ 
+ int ixgbe_mii_bus_init(struct ixgbe_hw *hw);
+ 
+@@ -158,6 +164,9 @@ int ixgbe_get_sfp_init_sequence_offsets(struct ixgbe_hw *hw,
+ 					u16 *list_offset,
+ 					u16 *data_offset);
+ bool ixgbe_tn_check_overtemp(struct ixgbe_hw *hw);
++#ifdef CONFIG_ML75_EXPER
++int ixgbe_probe_i2c_thermal_sensor(struct ixgbe_hw *hw);
++#endif
+ int ixgbe_read_i2c_byte_generic(struct ixgbe_hw *hw, u8 byte_offset,
+ 				u8 dev_addr, u8 *data);
+ int ixgbe_read_i2c_byte_generic_unlocked(struct ixgbe_hw *hw, u8 byte_offset,
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_type.h b/drivers/net/ethernet/intel/ixgbe/ixgbe_type.h
+index b1bfeb21537a..27d73bbf4dda 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_type.h
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_type.h
+@@ -3735,6 +3735,10 @@ struct ixgbe_hw {
+ 	u16				subsystem_device_id;
+ 	u16				subsystem_vendor_id;
+ 	u8				revision_id;
++#ifdef CONFIG_ML75_EXPER
++	u8				thermal_sensor_location;
++	bool				thermal_sensor_present;
++#endif
+ 	bool				adapter_stopped;
+ 	bool				force_full_reset;
+ 	bool				allow_unsupported_sfp;
