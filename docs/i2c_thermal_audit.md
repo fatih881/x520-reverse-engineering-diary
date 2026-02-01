@@ -3,6 +3,20 @@ Related patch: [LM75x scan over i2c](/patches/i2c_thermal_audit.patch)
 This attempt includes testing if there is lm75 near the ASIC on the PCB.    
 LM75 Document used : [lm75x][lm75_doc]    
 82599 Document used : [82599][82599]    
+# UPDATE 
+New findings regarding the EEPROM configuration have superseded the need for this manual audit, though the documented side effects (e.g; link flaps) remain valid.
+After I wrote this doc, I found Ext. Thermal Sensor Configuration Block Pointer at 6.2.9 on [82599 datasheet][82599],p 227. As it's understandable by the name, it's "Pointer to External Thermal Sensor Configuration block".
+When I search the offset in kernel source tree, (0x26) I found it was already checked and if there is no sensors, it's just swallowing the error and keeping the init going on.
+With a single check implemented to ixgbe_sysfs_init func;
+	/* Don't create thermal hwmon interface if no sensors present */
+	if (adapter->hw.mac.ops.init_thermal_sensor_thresh(&adapter->hw))
++		e_dev_info("no sensors");
+		goto exit;
+we can validate it on dmesg ; 
+ [  149.984777] ixgbe 0000:01:00.1: Intel(R) 10 Gigabit Network Connection  
+
+[  149.985034] ixgbe 0000:01:00.1: no sensors   
+This confirms that silicon is aware of the missing sensors. This problem won't be worked on again since the control plane is blind by the PCB design.
 
 ## Reason       
 Due to lack of observability on NIC's thermal state;     
